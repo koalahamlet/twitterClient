@@ -1,5 +1,7 @@
 package com.mikes.Twitter.app;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,19 +36,19 @@ public class ComposeTweetActivity extends Activity {
 				
 				MyTwitterApp.getRestClient().postTweet(tweet, new JsonHttpResponseHandler() {
 					@Override
-					public void onSuccess(String arg0) {
+					public void onSuccess(JSONObject json) {
 						Log.d("DEBUG", "Success");
 						Toast.makeText(ComposeTweetActivity.this, "Hold on to your butts",Toast.LENGTH_LONG).show();
-						
-						super.onSuccess(arg0);
+						ComposeTweetActivity.this.finish();
+						super.onSuccess(json);
 					}
 					@Override
-					public void onFailure(Throwable arg0, String arg1) {
+					public void onFailure(Throwable arg0, JSONObject arg1) {
 						Log.d("DEBUG", "Fail sauce");
 						super.onFailure(arg0, arg1);
 					}
 				});
-				finish();
+				
 			}
 		});
 		

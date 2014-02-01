@@ -35,7 +35,9 @@ public class TimelineActivity extends Activity {
 			
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
-				Tweet lastTweet = (Tweet) lvTweets.getItemAtPosition(totalItemsCount);
+				
+				Tweet lastTweet = (Tweet) lvTweets.getItemAtPosition(totalItemsCount-1);
+				
 				MyTwitterApp.getRestClient().getMoreHomeTimeline( lastTweet.getId(),
 						new JsonHttpResponseHandler() {
 					@Override
@@ -88,6 +90,12 @@ public class TimelineActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		fetchTimelineAsync(0);
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
