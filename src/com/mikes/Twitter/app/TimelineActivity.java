@@ -1,39 +1,84 @@
 package com.mikes.Twitter.app;
 
+
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mikes.Twitter.app.models.Tweet;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
-import android.view.Menu;
-import android.widget.ListView;
+import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 public class TimelineActivity extends Activity {
 
+	PullToRefreshListView lvTweets;
+	TweetsAdapter adapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_timeline);
 		
-		MyTwitterApp.getRestClient().getHomeTimeline(new JsonHttpResponseHandler() {
+		lvTweets = (PullToRefreshListView) findViewById(R.id.lvTweets);
+
+		lvTweets.setOnScrollListener(new EndlessScrollListener() {
+			
+			@Override
+			public void onLoadMore(int page, int totalItemsCount) {
+				Tweet lastTweet = (Tweet) lvTweets.getItemAtPosition(totalItemsCount);
+				MyTwitterApp.getRestClient().getMoreHomeTimeline( lastTweet.getId(),
+						new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(JSONArray jsonTweets) {
+						Log.d("DEBUG", jsonTweets.toString());
+						ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets);
+						adapter.addAll(tweets);
+						adapter.notifyDataSetChanged();
+
+					}
+					
+				});
+				
+			}
+		});
+		
+		lvTweets.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				fetchTimelineAsync(0);				
+			}
+		});
+				
+		fetchTimelineAsync(0);
+
+	}
+
+	protected void fetchTimelineAsync(int i) {
+		MyTwitterApp.getRestClient().getHomeTimeline(
+				new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray jsonTweets) {
 				Log.d("DEBUG", jsonTweets.toString());
 				ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets);
 				
-				ListView lvTweets = (ListView) findViewById(R.id.lvTweets);
-				TweetsAdapter adapter = new TweetsAdapter(getBaseContext(), tweets);
+				 adapter = new TweetsAdapter(getBaseContext(), tweets);
 				lvTweets.setAdapter(adapter);				
-				
+				lvTweets.onRefreshComplete();
 //				super.onSuccess(jsonTweets); 
 			}
 			
-		});
+		});		
 	}
 
 	@Override
@@ -43,4 +88,20 @@ public class TimelineActivity extends Activity {
 		return true;
 	}
 
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		case R.id.action_compose:
+			Intent i = new Intent(this, ComposeTweetActivity.class);
+			startActivityForResult(i, 7);
+			break;
+		default:
+			break;
+		}
+		return true;
+
+	}
+	
 }

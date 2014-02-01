@@ -47,6 +47,10 @@
             android:name="com.mikes.Twitter.app.TimelineActivity"
             android:label="@string/title_activity_timeline" >
         </activity>
+        <activity
+            android:name="com.mikes.Twitter.app.ComposeTweetActivity"
+            android:label="@string/title_activity_compose_tweet" >
+        </activity>
     </application>
 
 </manifest>

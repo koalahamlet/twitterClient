@@ -33,25 +33,45 @@ public class TwitterClient extends OAuthBaseClient {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
     }
     
+    
     // CHANGE THIS
     // DEFINE METHODS for different API endpoints here
     
-    public void getHomeTimeline(AsyncHttpResponseHandler handler){
+    
+    
+    
+	public void getHomeTimeline(AsyncHttpResponseHandler handler){
     	
     	String url = getApiUrl("statuses/home_timeline.json");
-    	client.get(url, null, handler);
+    	client.get(url, new RequestParams("count", "25"), handler);	
     	
+    }
+	
+	public void getMoreHomeTimeline( Long id, AsyncHttpResponseHandler handler ){
+    	
+		RequestParams params = new  RequestParams(); 
+		
+		params.put("count", "25");
+		params.put("max_id", id.toString());
+		
+    	String url = getApiUrl("statuses/home_timeline.json");
+    	client.get(url, params, handler);	
+    	
+    }
+	
+	
+    
+    public void postTweet(String tweet, AsyncHttpResponseHandler handler){
+    	
+    	String url = getApiUrl("statuses/update.json");
+    	
+    	
+    	client.post(url, new RequestParams("status", tweet), handler);
     	
     }
     
     
-    public void getInterestingnessList(AsyncHttpResponseHandler handler) {
-        String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-        // Can specify query string params directly or through RequestParams.
-        RequestParams params = new RequestParams();
-        params.put("format", "json");
-        client.get(apiUrl, params, handler);
-    }
+    
     
     /* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
      * 	  i.e getApiUrl("statuses/home_timeline.json");
