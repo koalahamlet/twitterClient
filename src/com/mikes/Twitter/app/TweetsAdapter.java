@@ -49,18 +49,19 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 		
 		TextView createdView = (TextView) view.findViewById(R.id.tvDate);
 		
-	
-//		Date date = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(tweet.getCreatedAt());
-//		String str = DateUtils.getRelativeDateTimeString(this, date.getTime(), MINUTE_IN_MILLIS, WEEK_IN_MILLIS,0); // Eventual flags
-//		DateUtils.getRelativeDateTimeString(this, date.getTime(),, transitionResolution, flags)
+		Date date = new Date();
 		try {
-			createdView.setText(tweet.getCreatedAt());
-			
+			date = tweet.getCreatedAt();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		String str = (String) DateUtils.getRelativeDateTimeString(getContext(), date.getTime(), DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS,0); // Eventual flags
+//		DateUtils.getRelativeDateTimeString(this, date.getTime(),, transitionResolution, flags)
+		
+			createdView.setText(str);
+
 		return view; 
 	}
 

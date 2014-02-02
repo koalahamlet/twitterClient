@@ -25,26 +25,26 @@ public class Tweet extends BaseModel {
         return getString("text");
     }
     
-    public String getCreatedAt() throws ParseException {
+    public Date getCreatedAt() throws ParseException {
     	String date = getString("created_at");
     	
 
   		  final String TWITTER="EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-  		  SimpleDateFormat sf = new SimpleDateFormat(TWITTER,Locale.ENGLISH);
-  		  sf.setLenient(true);
+  		  SimpleDateFormat sdf = new SimpleDateFormat(TWITTER,Locale.ENGLISH);
+  		  sdf.setLenient(true);
   		  
   		  
   		  
-  		Date now = sf.parse(date);
+  		Date now = sdf.parse(date);
   		
   		
-  		String date1 = (String) DateUtils.getRelativeDateTimeString(this,
-  				now.getTime(),
-  				DateUtils.MINUTE_IN_MILLIS,
-  				DateUtils.WEEK_IN_MILLIS,
-  				0); // Eventual flags
+//  		String date1 = (String) DateUtils.getRelativeDateTimeString(this,
+//  				now.getTime(),
+//  				DateUtils.MINUTE_IN_MILLIS,
+//  				DateUtils.WEEK_IN_MILLIS,
+//  				0); // Eventual flags
   		  
-  		  return date1;
+  		  return now;
   		  
 
 
