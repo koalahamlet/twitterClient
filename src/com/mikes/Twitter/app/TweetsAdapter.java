@@ -1,9 +1,14 @@
 package com.mikes.Twitter.app;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +46,20 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 		nameView.setText(Html.fromHtml(formattedName));
 		TextView bodyView = (TextView) view.findViewById(R.id.tvBody);
 		bodyView.setText(Html.fromHtml(tweet.getBody()));
+		
+		TextView createdView = (TextView) view.findViewById(R.id.tvDate);
+		
+	
+//		Date date = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(tweet.getCreatedAt());
+//		String str = DateUtils.getRelativeDateTimeString(this, date.getTime(), MINUTE_IN_MILLIS, WEEK_IN_MILLIS,0); // Eventual flags
+//		DateUtils.getRelativeDateTimeString(this, date.getTime(),, transitionResolution, flags)
+		try {
+			createdView.setText(tweet.getCreatedAt());
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return view; 
 	}

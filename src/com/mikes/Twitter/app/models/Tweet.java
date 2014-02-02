@@ -1,10 +1,18 @@
 package com.mikes.Twitter.app.models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import com.mikes.Twitter.app.TimelineActivity;
+
+import android.text.format.DateUtils;
 
 public class Tweet extends BaseModel {
     private User user;
@@ -15,6 +23,32 @@ public class Tweet extends BaseModel {
 
     public String getBody() {
         return getString("text");
+    }
+    
+    public String getCreatedAt() throws ParseException {
+    	String date = getString("created_at");
+    	
+
+  		  final String TWITTER="EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+  		  SimpleDateFormat sf = new SimpleDateFormat(TWITTER,Locale.ENGLISH);
+  		  sf.setLenient(true);
+  		  
+  		  
+  		  
+  		Date now = sf.parse(date);
+  		
+  		
+  		String date1 = (String) DateUtils.getRelativeDateTimeString(this,
+  				now.getTime(),
+  				DateUtils.MINUTE_IN_MILLIS,
+  				DateUtils.WEEK_IN_MILLIS,
+  				0); // Eventual flags
+  		  
+  		  return date1;
+  		  
+
+
+
     }
 
     public long getId() {

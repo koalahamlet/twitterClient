@@ -73,7 +73,10 @@ public class TimelineActivity extends Activity {
 			public void onSuccess(JSONArray jsonTweets) {
 				Log.d("DEBUG", jsonTweets.toString());
 				ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets);
-				
+//				for (Tweet tweet : tweets) {
+//					Log.d("halper", tweet.getCreatedAt());
+					
+//				}
 				 adapter = new TweetsAdapter(getBaseContext(), tweets);
 				lvTweets.setAdapter(adapter);				
 				lvTweets.onRefreshComplete();
