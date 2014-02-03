@@ -17,17 +17,17 @@ import com.activeandroid.annotation.Table;
 public class Tweet extends BaseModel {
 	
 	@Column(name = "user")
-	private User user;
+	public User user;
 	@Column(name = "body")
-	private String body;
+	public String body;
 	@Column(name = "createdAt")
-	private Date createdAt;
+	public Date createdAt;
 	@Column(name = "id")
-	private Long id;
+	public Long id;
 	@Column(name = "isFavorited")
-	private Boolean isFavorited;
+	public Boolean isFavorited;
 	@Column(name = "isRetweeted")
-	private Boolean isRetweeted;
+	public Boolean isRetweeted;
 
 	
 	public Tweet(){
@@ -114,4 +114,8 @@ public class Tweet extends BaseModel {
 
 		return tweets;
 	}
+
+
+
+	
 }

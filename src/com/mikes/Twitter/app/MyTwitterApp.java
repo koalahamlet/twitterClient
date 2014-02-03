@@ -24,6 +24,7 @@ public class MyTwitterApp extends com.activeandroid.app.Application {
         super.onCreate();
         MyTwitterApp.context = this;
         
+        
         Tweet tweet = new Tweet();
         tweet.save();
         

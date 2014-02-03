@@ -9,20 +9,20 @@ import com.activeandroid.annotation.Table;
 public class User extends BaseModel {
 	
 	@Column(name = "name")
-	
     public String name;
-	@Column(name = "")
+	@Column(name = "id")
     public Long id;
-    public String screenName;
-    @Column(name = "")
+	@Column(name = "screenName")
+	public String screenName;
+	@Column(name = "profileImageUrl")
     public String profileImageUrl;
-    @Column(name = "")
+	@Column(name = "profileBackgroundImageUrl")
     public String profileBackgroundImageUrl;
-    @Column(name = "")
+	@Column(name = "numTweets")
     public int numTweets;
-    @Column(name = "")
+	@Column(name = "followersCount")
     public int followersCount;
-    @Column(name = "")
+    @Column(name = "friendsCount")
     public int friendsCount;
 	
     public User(){
