@@ -2,12 +2,56 @@ package com.mikes.Twitter.app.models;
 
 import org.json.JSONObject;
 
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+@Table(name = "User")
 public class User extends BaseModel {
-    public String getName() {
+	
+	@Column(name = "name")
+	
+    public String name;
+	@Column(name = "")
+    public Long id;
+    public String screenName;
+    @Column(name = "")
+    public String profileImageUrl;
+    @Column(name = "")
+    public String profileBackgroundImageUrl;
+    @Column(name = "")
+    public int numTweets;
+    @Column(name = "")
+    public int followersCount;
+    @Column(name = "")
+    public int friendsCount;
+	
+    public User(){
+    	super();
+    }
+    
+    
+    public User(String name, Long id, String screenName,
+			String profileImageUrl, String profileBackgroundImageUrl,
+			int numTweets, int followersCount, int friendsCount) {
+		super();
+		this.name = name;
+		this.id = id;
+		this.screenName = screenName;
+		this.profileImageUrl = profileImageUrl;
+		this.profileBackgroundImageUrl = profileBackgroundImageUrl;
+		this.numTweets = numTweets;
+		this.followersCount = followersCount;
+		this.friendsCount = friendsCount;
+	}
+
+
+	public String getName() {
         return getString("name");
     }
 
+    
     public long getId() {
+    	
         return getLong("id");
     }
 

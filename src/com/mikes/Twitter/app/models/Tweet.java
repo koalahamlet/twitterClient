@@ -10,89 +10,108 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mikes.Twitter.app.TimelineActivity;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
-import android.text.format.DateUtils;
-
+@Table(name = "Tweet")
 public class Tweet extends BaseModel {
-    private User user;
+	
+	@Column(name = "user")
+	private User user;
+	@Column(name = "body")
+	private String body;
+	@Column(name = "createdAt")
+	private Date createdAt;
+	@Column(name = "id")
+	private Long id;
+	@Column(name = "isFavorited")
+	private Boolean isFavorited;
+	@Column(name = "isRetweeted")
+	private Boolean isRetweeted;
 
-    public User getUser() {
-        return user;
-    }
-
-    public String getBody() {
-        return getString("text");
-    }
-    
-    public Date getCreatedAt() throws ParseException {
-    	String date = getString("created_at");
-    	
-
-  		  final String TWITTER="EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-  		  SimpleDateFormat sdf = new SimpleDateFormat(TWITTER,Locale.ENGLISH);
-  		  sdf.setLenient(true);
-  		  
-  		  
-  		  
-  		Date now = sdf.parse(date);
-  		
-  		
-//  		String date1 = (String) DateUtils.getRelativeDateTimeString(this,
-//  				now.getTime(),
-//  				DateUtils.MINUTE_IN_MILLIS,
-//  				DateUtils.WEEK_IN_MILLIS,
-//  				0); // Eventual flags
-  		  
-  		  return now;
-  		  
+	
+	public Tweet(){
+		super();
+	}
+	
+	
+	
+	public Tweet(User user, String body, Date createdAt, Long id,
+			Boolean isFavorited, Boolean isRetweeted) {
+		super();
+		this.user = user;
+		this.body = body;
+		this.createdAt = createdAt;
+		this.id = id;
+		this.isFavorited = isFavorited;
+		this.isRetweeted = isRetweeted;
+	}
 
 
 
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public long getId() {
-        return getLong("id");
-    }
+	public String getBody() {
+		return getString("text");
+	}
 
-    public boolean isFavorited() {
-        return getBoolean("favorited");
-    }
+	public Date getCreatedAt() throws ParseException {
+		String date = getString("created_at");
 
-    public boolean isRetweeted() {
-        return getBoolean("retweeted");
-    }
+		final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+		SimpleDateFormat sdf = new SimpleDateFormat(TWITTER, Locale.ENGLISH);
+		sdf.setLenient(true);
 
-    public static Tweet fromJson(JSONObject jsonObject) {
-        Tweet tweet = new Tweet();
-        try {
-            tweet.jsonObject = jsonObject;
-            tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return tweet;
-    }
+		Date now = sdf.parse(date);
+		return now;
 
-    public static ArrayList<Tweet> fromJson(JSONArray jsonArray) {
-        ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
+	}
 
-        for (int i=0; i < jsonArray.length(); i++) {
-            JSONObject tweetJson = null;
-            try {
-                tweetJson = jsonArray.getJSONObject(i);
-            } catch (Exception e) {
-                e.printStackTrace();
-                continue;
-            }
+	public long getId() {
+		return getLong("id");
+	}
 
-            Tweet tweet = Tweet.fromJson(tweetJson);
-            if (tweet != null) {
-                tweets.add(tweet);
-            }
-        }
+	public boolean isFavorited() {
+		return getBoolean("favorited");
+	}
 
-        return tweets;
-    }
+	public boolean isRetweeted() {
+		return getBoolean("retweeted");
+	}
+
+	public static Tweet fromJson(JSONObject jsonObject) {
+		Tweet tweet = new Tweet();
+		try {
+			tweet.jsonObject = jsonObject;
+			tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return tweet;
+	}
+
+	public static ArrayList<Tweet> fromJson(JSONArray jsonArray) {
+		ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject tweetJson = null;
+			try {
+				tweetJson = jsonArray.getJSONObject(i);
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+
+			Tweet tweet = Tweet.fromJson(tweetJson);
+			if (tweet != null) {
+				tweets.add(tweet);
+				
+			}
+		}
+
+		return tweets;
+	}
 }

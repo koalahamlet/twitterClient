@@ -2,6 +2,7 @@ package com.mikes.Twitter.app;
 
 import android.content.Context;
 
+import com.mikes.Twitter.app.models.Tweet;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -22,6 +23,9 @@ public class MyTwitterApp extends com.activeandroid.app.Application {
     public void onCreate() {
         super.onCreate();
         MyTwitterApp.context = this;
+        
+        Tweet tweet = new Tweet();
+        tweet.save();
         
         // Create global configuration and initialize ImageLoader with this configuration
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().

@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 
 import android.app.Activity;
+import android.content.ClipData.Item;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.activeandroid.ActiveAndroid;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mikes.Twitter.app.models.Tweet;
 
@@ -37,8 +38,8 @@ public class TimelineActivity extends Activity {
 			public void onLoadMore(int page, int totalItemsCount) {
 				
 				Tweet lastTweet = (Tweet) lvTweets.getItemAtPosition(totalItemsCount-1);
-				
-				MyTwitterApp.getRestClient().getMoreHomeTimeline( lastTweet.getId(),
+				// minus one in the next call to get rid of duplicate tweet
+				MyTwitterApp.getRestClient().getMoreHomeTimeline( lastTweet.getId()-1,
 						new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONArray jsonTweets) {
@@ -46,7 +47,7 @@ public class TimelineActivity extends Activity {
 						ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets);
 						adapter.addAll(tweets);
 						adapter.notifyDataSetChanged();
-
+						
 					}
 					
 				});
