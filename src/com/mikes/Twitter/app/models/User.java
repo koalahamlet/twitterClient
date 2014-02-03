@@ -1,93 +1,92 @@
 package com.mikes.Twitter.app.models;
-
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-@Table(name = "User")
-public class User extends BaseModel {
-	
-	@Column(name = "name")
-    public String name;
-	@Column(name = "id")
-    public Long id;
-	@Column(name = "screenName")
-	public String screenName;
-	@Column(name = "profileImageUrl")
-    public String profileImageUrl;
-	@Column(name = "profileBackgroundImageUrl")
-    public String profileBackgroundImageUrl;
-	@Column(name = "numTweets")
-    public int numTweets;
-	@Column(name = "followersCount")
-    public int followersCount;
-    @Column(name = "friendsCount")
-    public int friendsCount;
-	
-    public User(){
-    	super();
-    }
+@Table(name = "user")
+public class User extends Model {
+    @Column(name = "name", index = true)
+    private String name;
     
+    @Column(name = "uid", index = true)
+    private long uid;
     
-    public User(String name, Long id, String screenName,
-			String profileImageUrl, String profileBackgroundImageUrl,
-			int numTweets, int followersCount, int friendsCount) {
-		super();
-		this.name = name;
-		this.id = id;
-		this.screenName = screenName;
-		this.profileImageUrl = profileImageUrl;
-		this.profileBackgroundImageUrl = profileBackgroundImageUrl;
-		this.numTweets = numTweets;
-		this.followersCount = followersCount;
-		this.friendsCount = friendsCount;
-	}
-
-
-	public String getName() {
-        return getString("name");
+    @Column(name = "screen_name", index = true)
+    private String screenName;
+    
+    @Column(name = "profile_image_url", index = true)
+    private String profileImageUrl;
+    
+    @Column(name = "num_tweets", index = true)
+    private int numTweets;
+    
+    @Column(name = "followers_count", index = true)
+    private int followersCount;
+    
+    @Column(name = "friends_count", index = true)
+    private int friendsCount;
+    
+    public User() {
+        super();
     }
 
-    
-    public long getId() {
-    	
-        return getLong("id");
+    public User(String name, long uid, String screenName,
+            String profileImageUrl, int numTweets, int followersCount,
+            int friendsCount) {
+        super();
+        this.name = name;
+        this.uid = uid;
+        this.screenName = screenName;
+        this.profileImageUrl = profileImageUrl;
+        this.numTweets = numTweets;
+        this.followersCount = followersCount;
+        this.friendsCount = friendsCount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getUid() {
+        return uid;
     }
 
     public String getScreenName() {
-        return getString("screen_name");
+        return screenName;
     }
 
     public String getProfileImageUrl() {
-    	return getString("profile_image_url");
-    }
-    
-    public String getProfileBackgroundImageUrl() {
-        return getString("profile_background_image_url");
+        return profileImageUrl;
     }
 
     public int getNumTweets() {
-        return getInt("statuses_count");
+        return numTweets;
     }
 
     public int getFollowersCount() {
-        return getInt("followers_count");
+        return followersCount;
     }
 
     public int getFriendsCount() {
-        return getInt("friends_count");
+        return friendsCount;
     }
 
     public static User fromJson(JSONObject json) {
         User u = new User();
-
         try {
-            u.jsonObject = json;
-        } catch (Exception e) {
+            u.name = json.getString("name");
+            u.uid = json.getLong("id");
+            u.screenName = json.getString("screen_name");
+            u.profileImageUrl = json.getString("profile_image_url");
+            u.numTweets = json.getInt("statuses_count");
+            u.followersCount = json.getInt("followers_count");
+            u.friendsCount = json.getInt("friends_count");
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return u;
     }
 

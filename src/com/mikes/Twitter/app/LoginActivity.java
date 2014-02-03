@@ -2,10 +2,10 @@ package com.mikes.Twitter.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 
 import com.codepath.oauth.OAuthLoginActivity;
+import com.mikes.Twitter.app.models.User;
 
 public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 
@@ -24,6 +24,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
     public void onLoginSuccess() {
     	 Intent i = new Intent(this, TimelineActivity.class);
     	 startActivity(i);
+    	
     }
     
     // OAuth authentication flow failed, handle the error

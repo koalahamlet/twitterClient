@@ -25,9 +25,6 @@ public class MyTwitterApp extends com.activeandroid.app.Application {
         MyTwitterApp.context = this;
         
         
-        Tweet tweet = new Tweet();
-        tweet.save();
-        
         // Create global configuration and initialize ImageLoader with this configuration
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
         		cacheInMemory().cacheOnDisc().build();
