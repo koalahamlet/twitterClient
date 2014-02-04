@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mikes.Twitter.app.models.Tweet;
 
@@ -27,8 +27,9 @@ public class TimelineActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_timeline);
-		
+		 		    
 		lvTweets = (PullToRefreshListView) findViewById(R.id.lvTweets);
 
 		lvTweets.setOnScrollListener(new EndlessScrollListener() {
@@ -67,21 +68,25 @@ public class TimelineActivity extends Activity {
 	}
 
 	protected void fetchTimelineAsync(int i) {
+		setProgressBarIndeterminateVisibility(true);
 		MyTwitterApp.getRestClient().getHomeTimeline(
 				new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONArray jsonTweets) {
 				Log.d("DEBUG", jsonTweets.toString());
+				setProgressBarIndeterminateVisibility(false);
 				ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets);
-//				for (Tweet tweet : tweets) {
-//					Log.d("halper", tweet.getCreatedAt());
-					
-//				}
+
 				 adapter = new TweetsAdapter(getBaseContext(), tweets);
 				lvTweets.setAdapter(adapter);				
 				lvTweets.onRefreshComplete();
 //				super.onSuccess(jsonTweets); 
 			}
+			@Override
+					public void onFailure(Throwable arg0, JSONArray arg1) {
+				setProgressBarIndeterminateVisibility(false);
+						super.onFailure(arg0, arg1);
+					}
 			
 		});		
 	}
