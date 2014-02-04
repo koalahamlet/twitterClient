@@ -2,21 +2,24 @@ package com.mikes.Twitter.app;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 
 import android.app.Activity;
-import android.content.ClipData.Item;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mikes.Twitter.app.models.Tweet;
-import com.mikes.Twitter.app.models.User;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -48,16 +51,41 @@ public class TimelineActivity extends Activity {
 						ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets);
 						adapter.addAll(tweets);
 						adapter.notifyDataSetChanged();
-						for(Tweet tweet : tweets){
-							 
-					    	 
+						
+						ActiveAndroid.beginTransaction();
+						try {
+							for(Tweet tweet : tweets){
+								Log.d("DEBUG", "User: " + tweet.getUser().toString());
+								Log.d("DEBUG", "Tweet: " + tweet.toString());
+								tweet.getUser().save();
+								tweet.save();
+						    	 
+							}
+						        ActiveAndroid.setTransactionSuccessful();
 						}
+						finally {
+						        ActiveAndroid.endTransaction();
+						}
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable arg0, JSONArray jsonTweets) {
+//						Log.d("DEBUG", "did I get in here?");
+//						List<Tweet> tweets = new Select().from(Tweet.class).where("uid = ?").orderBy("uid ASC").execute();
+//						Log.d("DEBUG", "potatoes are cool");
+//						adapter.addAll(tweets);
+//						adapter.notifyDataSetChanged();
+
+						super.onFailure(arg0, jsonTweets);
 					}
 					
 				});
 				
 			}
 		});
+		
+		
 		
 		lvTweets.setOnRefreshListener(new OnRefreshListener() {
 			
@@ -98,6 +126,27 @@ public class TimelineActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	protected void onResume() {
+		
+		ConnectivityManager cm =
+		        (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		 
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+		
+		if (!isConnected){
+			Log.d("DEBUG", "did I get in here?");
+			List<Tweet> tweets = new Select("*").from(Tweet.class).orderBy("uid ASC").execute();
+			Log.d("DEBUG", tweets.toString());
+			adapter.addAll(tweets);
+			adapter.notifyDataSetChanged();
+
+		}
+		
+		super.onResume();
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
