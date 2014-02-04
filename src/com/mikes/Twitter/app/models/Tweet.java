@@ -17,22 +17,24 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "tweet")
 public class Tweet extends Model {
-	@Column(name = "body", index = true)
+	 
+	
+	@Column(name = "body")
 	public String body;
 	
-	@Column(name = "uid", index = true)
+	@Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	public long uid;
 	
-	@Column(name = "favorited", index = true)
+	@Column(name = "favorited")
 	public boolean favorited;
 
-	@Column(name = "retweeted", index = true)
+	@Column(name = "retweeted")
 	public boolean retweeted;
 
-	@Column(name = "user", index = true)
+	@Column(name = "user")
     public User user;
 
-	@Column(name = "date", index = true)
+	@Column(name = "date")
     public String date;
 	
 	public Tweet() {
@@ -86,6 +88,12 @@ public class Tweet extends Model {
 		return now;
 
 	}
+    
+//    public String toString(){
+//    	
+//        	return this.getBody();
+//        
+//    }
 
     public static Tweet fromJson(JSONObject jsonObject) {
         Tweet tweet = new Tweet();

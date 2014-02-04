@@ -8,25 +8,27 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "user")
 public class User extends Model {
-    @Column(name = "name", index = true)
+    
+	//get rid of all indexes but one. 
+	@Column(name = "name")
     private String name;
     
-    @Column(name = "uid", index = true)
+    @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private long uid;
     
-    @Column(name = "screen_name", index = true)
+    @Column(name = "screen_name")
     private String screenName;
     
-    @Column(name = "profile_image_url", index = true)
+    @Column(name = "profile_image_url")
     private String profileImageUrl;
     
-    @Column(name = "num_tweets", index = true)
+    @Column(name = "num_tweets")
     private int numTweets;
     
-    @Column(name = "followers_count", index = true)
+    @Column(name = "followers_count")
     private int followersCount;
     
-    @Column(name = "friends_count", index = true)
+    @Column(name = "friends_count")
     private int friendsCount;
     
     public User() {
@@ -73,6 +75,10 @@ public class User extends Model {
     public int getFriendsCount() {
         return friendsCount;
     }
+//    
+//    public String toString() {
+//    	return this.getName();
+//    }
 
     public static User fromJson(JSONObject json) {
         User u = new User();
