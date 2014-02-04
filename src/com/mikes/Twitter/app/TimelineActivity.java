@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mikes.Twitter.app.models.Tweet;
@@ -83,8 +84,9 @@ public class TimelineActivity extends Activity {
 //				super.onSuccess(jsonTweets); 
 			}
 			@Override
-					public void onFailure(Throwable arg0, JSONArray arg1) {
-				setProgressBarIndeterminateVisibility(false);
+					public void onFailure(Throwable arg0, String arg1) {
+						setProgressBarIndeterminateVisibility(false);
+						Toast.makeText(TimelineActivity.this, "Whoops, we can't seem to speak to teh netz at the moment. You'll see your tweets again once you've gotten a better connection.", Toast.LENGTH_LONG).show();
 						super.onFailure(arg0, arg1);
 					}
 			
@@ -98,6 +100,12 @@ public class TimelineActivity extends Activity {
 		return true;
 	}
 
+//	@Override
+//	protected void onResume() {
+//		fetchTimelineAsync(0);
+//		super.onResume();
+//	};
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
