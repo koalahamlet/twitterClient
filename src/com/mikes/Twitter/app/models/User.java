@@ -13,7 +13,7 @@ public class User extends Model {
 	@Column(name = "name")
     private String name;
     
-    @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "uid")
     private long uid;
     
     @Column(name = "screen_name")
@@ -75,10 +75,10 @@ public class User extends Model {
     public int getFriendsCount() {
         return friendsCount;
     }
-//    
-//    public String toString() {
-//    	return this.getName();
-//    }
+    
+    public String toString() {
+    	return this.getName();
+    }
 
     public static User fromJson(JSONObject json) {
         User u = new User();

@@ -2,19 +2,17 @@ package com.mikes.Twitter.app;
 
 import org.json.JSONObject;
 
-import android.R.color;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +21,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class ComposeTweetActivity extends Activity {
 
 	public EditText etCompose;
-	public Button bTweet;
+	public ImageButton bTweet;
 	public TextView tvCount;
 
 	@Override
@@ -32,7 +30,7 @@ public class ComposeTweetActivity extends Activity {
 		setContentView(R.layout.activity_compose_tweet);
 
 		etCompose = (EditText) findViewById(R.id.etCompose);
-		bTweet = (Button) findViewById(R.id.bTweet);
+		bTweet = (ImageButton) findViewById(R.id.bTweet);
 		tvCount = (TextView) findViewById(R.id.tvCount);
 
 		bTweet.setOnClickListener(new OnClickListener() {
@@ -40,15 +38,22 @@ public class ComposeTweetActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
+				
+				
 				String tweet = etCompose.getText().toString();
-
+				
+				if(tweet.isEmpty()){
+					etCompose.setError("You have to give the Twitter Bird something to tweet!"); // fancy error message for edit texts
+				}else{
+				
+				
 				MyTwitterApp.getRestClient().postTweet(tweet,
 						new JsonHttpResponseHandler() {
 							@Override
 							public void onSuccess(JSONObject json) {
 								Log.d("DEBUG", "Success");
 								Toast.makeText(ComposeTweetActivity.this,
-										"Hold on to your butts",
+										"Twitter Bird is all atwitter.",
 										Toast.LENGTH_LONG).show();
 								ComposeTweetActivity.this.finish();
 								super.onSuccess(json);
@@ -57,11 +62,15 @@ public class ComposeTweetActivity extends Activity {
 							@Override
 							public void onFailure(Throwable arg0,
 									JSONObject arg1) {
+								Toast.makeText(ComposeTweetActivity.this,
+										"We're Sorry. The Twitter Bird has flown the coop. Maybe it'll come back once you've regained network connection",
+										Toast.LENGTH_LONG).show();
 								Log.d("DEBUG", "Fail sauce");
 								super.onFailure(arg0, arg1);
 							}
 						});
 
+				}
 			}
 		});
 

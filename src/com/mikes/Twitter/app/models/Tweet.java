@@ -3,6 +3,7 @@ package com.mikes.Twitter.app.models;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONArray;
@@ -14,6 +15,7 @@ import android.net.ParseException;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 @Table(name = "tweet")
 public class Tweet extends Model {
@@ -22,7 +24,7 @@ public class Tweet extends Model {
 	@Column(name = "body")
 	public String body;
 	
-	@Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+	@Column(name = "uid")
 	public long uid;
 	
 	@Column(name = "favorited")
@@ -89,11 +91,11 @@ public class Tweet extends Model {
 
 	}
     
-//    public String toString(){
-//    	
-//        	return this.getBody();
-//        
-//    }
+    public String toString(){
+    	
+        	return this.getBody();
+        
+    }
 
     public static Tweet fromJson(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
@@ -131,4 +133,9 @@ public class Tweet extends Model {
 
         return tweets;
     }
+
+	public static List<Tweet> getAll() {
+		
+		return new Select().from(Tweet.class).execute();
+	}
 }
