@@ -1,149 +1,92 @@
 package com.mikes.Twitter.app;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-
-import android.app.Activity;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.activeandroid.ActiveAndroid;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.mikes.Twitter.app.fragments.HomeTimelineFragment;
+import com.mikes.Twitter.app.fragments.MentionsFragment;
+import com.mikes.Twitter.app.fragments.TweetsListFragment;
 import com.mikes.Twitter.app.models.Tweet;
 
 import eu.erikw.PullToRefreshListView;
-import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
-public class TimelineActivity extends Activity {
+public class TimelineActivity extends FragmentActivity implements TabListener {
 
 	PullToRefreshListView lvTweets;
 	TweetsAdapter adapter;
 	List<Tweet> tweets;
-
+	TweetsListFragment fragmentTweets;
+	
+	private void setupNavigationTabs() {
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayShowTitleEnabled(true);
+		
+		Tab tabHome = actionBar.newTab().setText("Home").setTag("HomeTimelineFragment")
+				.setIcon(R.drawable.home_icon).setTabListener(this);
+		
+		Tab tabMentions = actionBar.newTab().setText("Mentions").setTag("MentionsFragment")
+				.setIcon(R.drawable.at_icon).setTabListener(this);
+		
+		actionBar.addTab(tabHome);
+		actionBar.addTab(tabMentions);
+		
+		actionBar.selectTab(tabHome);
+		
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_timeline);
+		setupNavigationTabs();
+//		 fragmentTweets = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentTweets);
 
-		lvTweets = (PullToRefreshListView) findViewById(R.id.lvTweets);
+		
 		
 		if (!isInternetAvailable(this)) {
-			tweets = Tweet.getAll();
-			adapter = new TweetsAdapter(getBaseContext(), tweets);
-			lvTweets.setAdapter(adapter);
+//			tweets = Tweet.getAll();
+//			adapter = new TweetsAdapter(getBaseContext(), tweets);
+//			lvTweets.setAdapter(adapter);
 
 		} else {
 			fetchTimelineAsync(0);
 		}
 
-		lvTweets.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh() {
-				fetchTimelineAsync(0);
-			}
-		});
+//		lvTweets.setOnRefreshListener(new OnRefreshListener() {
+//
+//			@Override
+//			public void onRefresh() {
+//				fetchTimelineAsync(0);
+//			}
+//		});
 		
 			
-			lvTweets.setOnScrollListener(new EndlessScrollListener() {
-	
-				@Override
-				public void onLoadMore(int page, int totalItemsCount) {
-					setProgressBarIndeterminateVisibility(Boolean.TRUE); 
-					Tweet lastTweet = (Tweet) lvTweets
-							.getItemAtPosition(totalItemsCount - 1);
-					// minus one in the next call to get rid of duplicate tweet
-					MyTwitterApp.getRestClient().getMoreHomeTimeline(
-							lastTweet.getTweetId() - 1,
-							new JsonHttpResponseHandler() {
-								@Override
-								public void onSuccess(JSONArray jsonTweets) {
-									setProgressBarIndeterminateVisibility(Boolean.FALSE); 
-									Log.d("DEBUG", jsonTweets.toString());
-									tweets = Tweet.fromJson(jsonTweets);
-									adapter.addAll(tweets);
-									adapter.notifyDataSetChanged();
-									ActiveAndroid.beginTransaction();
-									try {
-										for (Tweet tweetInstance : tweets) {
-											tweetInstance.getUser().save();
-											tweetInstance.save();
-										}
-										ActiveAndroid.setTransactionSuccessful();
-									} finally {
-										ActiveAndroid.endTransaction();
-									}
-	
-								}
-	
-								@Override
-								public void onFailure(Throwable arg0, String arg1) {
-									showFailMessage();
-									setProgressBarIndeterminateVisibility(Boolean.FALSE); 
-									super.onFailure(arg0, arg1);
-								}
-	
-								
-							});
-	
-				}
-			});
-
+//			
 	}
+
+	
 
 	protected void fetchTimelineAsync(int i) {
 		 setProgressBarIndeterminateVisibility(Boolean.TRUE); 
 		 
-		 MyTwitterApp.getRestClient().getHomeTimeline(
-				new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(JSONArray jsonTweets) {
-						setProgressBarIndeterminateVisibility(Boolean.FALSE); 
-						Log.d("DEBUG", jsonTweets.toString());
-						 tweets = Tweet.fromJson(jsonTweets);
-						// for (Tweet tweet : tweets) {
-						// Log.d("halper", tweet.getCreatedAt());
-
-						// }
-						adapter = new TweetsAdapter(getBaseContext(), tweets);
-						lvTweets.setAdapter(adapter);
-						lvTweets.onRefreshComplete();
-						ActiveAndroid.beginTransaction();
-						try{
-						for (Tweet tweet : tweets) {
-							Log.d("DEBUG", "User: "+ tweet.getUser().toString());
-							Log.d("DEBUG", "Tweet: " + tweet.toString());
-							tweet.getUser().save();
-							tweet.save();
-						}
-						ActiveAndroid.setTransactionSuccessful();
-						} finally {
-							ActiveAndroid.endTransaction();
-						}
-						
-						
-					}
-					@Override
-					public void onFailure(Throwable arg0, String arg1) {
-						setProgressBarIndeterminateVisibility(Boolean.FALSE); 
-						showFailMessage();
-						super.onFailure(arg0, arg1);
-					}
-
-					
-
-				});
+		 setProgressBarIndeterminateVisibility(Boolean.FALSE);
 	}
 
 	@Override
@@ -160,10 +103,7 @@ public class TimelineActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	public void showFailMessage() {
-		// TODO Auto-generated method stub
-		Toast.makeText(TimelineActivity.this, "Whoops, we can't seem to speak to teh netz at the moment. You'll see your tweets again once you've gotten a better connection.", Toast.LENGTH_LONG).show();
-	}
+	
 	public static boolean isInternetAvailable(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -185,6 +125,32 @@ public class TimelineActivity extends Activity {
 		}
 		return true;
 
+	}
+
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		
+		FragmentManager manager = getSupportFragmentManager();
+		android.support.v4.app.FragmentTransaction fts = manager.beginTransaction();
+		
+		if (tab.getTag() == "HomeTimelineFragment"){
+			fts.replace(R.id.frameContainer, new HomeTimelineFragment());
+		}else{
+			fts.replace(R.id.frameContainer, new MentionsFragment());
+		}
+		fts.commit();
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.mikes.Twitter.app;
 
 import org.scribe.builder.api.Api;
-import org.scribe.builder.api.FlickrApi;
 import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
@@ -59,6 +58,11 @@ public class TwitterClient extends OAuthBaseClient {
     	
     }
 	
+	
+	public void getMentions(AsyncHttpResponseHandler handler) {
+		String url = getApiUrl("statuses/mentions_timeline.json");
+		client.get(url, null,handler);
+	}
 	
     
     public void postTweet(String tweet, AsyncHttpResponseHandler handler){
