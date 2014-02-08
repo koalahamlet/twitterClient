@@ -48,53 +48,16 @@ public class TweetsListFragment extends Fragment {
 		
 		lvTweets.setOnScrollListener(new EndlessScrollListener() {
 
+			
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
 //				setProgressBarIndeterminateVisibility(Boolean.TRUE); 
 				
-				if(totalItemsCount == 1){
-					Log.d("DEBUG", "FFFFFFFFFFFFFFFFFFFFUUUUUUUUUUUUUUUUUUUUU");
-				}else{
-				Tweet lastTweet = (Tweet) lvTweets.getItemAtPosition(totalItemsCount - 1);
-				Integer count = totalItemsCount;
-				//								Integer count = getAdapter().getCount();
-				Log.d("DEBUG", count.toString());
-				Log.d("DEBUG", lastTweet.toString());
-				// minus one in the next call to get rid of duplicate tweet
-				MyTwitterApp.getRestClient().getMoreHomeTimeline(lastTweet.getTweetId() - 1,
-						new JsonHttpResponseHandler() {
-							@Override
-							public void onSuccess(JSONArray jsonTweets) {
-//								setProgressBarIndeterminateVisibility(Boolean.FALSE); 
-								Log.d("DEBUG", jsonTweets.toString());
-								tweets = Tweet.fromJson(jsonTweets);
-								adapter.addAll(tweets);
-								adapter.notifyDataSetChanged();
-//								ActiveAndroid.beginTransaction();
-//								try {
-//									for (Tweet tweetInstance : tweets) {
-//										tweetInstance.getUser().save();
-//										tweetInstance.save();
-//									}
-//									ActiveAndroid.setTransactionSuccessful();
-//								} finally {
-//									ActiveAndroid.endTransaction();
-//								}
-
-							}
-
-							@Override
-							public void onFailure(Throwable arg0, String arg1) {
-								showFailMessage();
-//								setProgressBarIndeterminateVisibility(Boolean.FALSE); 
-								super.onFailure(arg0, arg1);
-							}
-
-							
-						});
-	
+				queryTehNetz(page ,totalItemsCount);
+				
 			}
-			}
+
+			
 });
 	}
 	
@@ -105,5 +68,10 @@ public class TweetsListFragment extends Fragment {
 	
 	public TweetsAdapter getAdapter() {
 		return adapter;
+	}
+
+	public void queryTehNetz(int page, int totalItemsCount) {
+		//nothing to see here
+		
 	}
 }
