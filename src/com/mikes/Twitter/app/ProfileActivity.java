@@ -33,10 +33,10 @@ public class ProfileActivity extends FragmentActivity {
 		
 		screenName = (String) getIntent().getStringExtra("userinfo");
 		
-		
-		if (screenName != null){
-			Log.d("DEBUG", "YOU GOT SOMETHING");
-		
+//		
+//		if (screenName != null){
+//			Log.d("DEBUG", "YOU GOT SOMETHING");
+//		
 		MyTwitterApp.getRestClient().getOtherUsersInfo(screenName, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(int arg0, JSONObject json) {
@@ -55,21 +55,21 @@ public class ProfileActivity extends FragmentActivity {
 
 			
 		
-		}else{
-			Log.d("DEBUG", "mugatu screams:YOU GET NOTHING! NOTHING! NOTHING!");
-			
-			MyTwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
-				@Override
-				public void onSuccess(JSONObject json) {
-					// TODO Auto-generated method stub
-					User u = User.fromJson(json);
-					getActionBar().setTitle("@" + u.getScreenName());
-					populateProfileHeader(u);
-				}
-
-				
-			});
-		}
+//		}else{
+//			Log.d("DEBUG", "mugatu screams:YOU GET NOTHING! NOTHING! NOTHING!");
+//			
+//			MyTwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
+//				@Override
+//				public void onSuccess(JSONObject json) {
+//					// TODO Auto-generated method stub
+//					User u = User.fromJson(json);
+//					getActionBar().setTitle("@" + u.getScreenName());
+//					populateProfileHeader(u);
+//				}
+//
+//				
+//			});
+//		}
 	}
 	
 	private void populateProfileHeader(User user) {
@@ -80,8 +80,7 @@ public class ProfileActivity extends FragmentActivity {
 		tvFollowing = (TextView) findViewById(R.id.tvFollowing);
 		ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
 //		Toast.makeText(this, user.getScreenName(), Toast.LENGTH_LONG).show();
-		
-		ivProfileImage.setTag(user.getScreenName());
+//		ivProfileImage.setTag(user.getScreenName());
 		
 		tvName.setText(user.getName());
 		tvTagline.setText(user.getTagline());

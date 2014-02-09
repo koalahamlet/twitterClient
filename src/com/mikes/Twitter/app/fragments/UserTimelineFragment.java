@@ -33,7 +33,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 		ProfileActivity activity = (ProfileActivity) getActivity();
 		final String screenNamedizzle = activity.getScreenName();
 
-		if (screenNamedizzle != null) {
+//		if (screenNamedizzle != null) {
 
 			MyTwitterApp.getRestClient().getOtherUsersTimeline(
 					screenNamedizzle, new JsonHttpResponseHandler() {
@@ -53,17 +53,17 @@ public class UserTimelineFragment extends TweetsListFragment {
 							super.onFailure(arg0, arg1);
 						}
 					});
-		} else {
-			MyTwitterApp.getRestClient().getUserTimeline(
-					new JsonHttpResponseHandler() {
-						@Override
-						public void onSuccess(JSONArray json) {
-//							Toast.makeText(getActivity(), screenNamedizzle,
-//									Toast.LENGTH_LONG).show();
-							getAdapter().addAll(Tweet.fromJson(json));
-						}
-					});
-		}
+//		} else {
+//			MyTwitterApp.getRestClient().getUserTimeline(
+//					new JsonHttpResponseHandler() {
+//						@Override
+//						public void onSuccess(JSONArray json) {
+////							Toast.makeText(getActivity(), screenNamedizzle,
+////									Toast.LENGTH_LONG).show();
+//							getAdapter().addAll(Tweet.fromJson(json));
+//						}
+//					});
+//		}
 	}
 
 	@Override
@@ -79,8 +79,11 @@ public class UserTimelineFragment extends TweetsListFragment {
 			Log.d("DEBUG", count.toString());
 			Log.d("DEBUG", lastTweet.toString());
 
-			MyTwitterApp.getRestClient().getAdditionalUserTimeline(
-					lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
+			ProfileActivity activity = (ProfileActivity) getActivity();
+			final String screenNamedizzle = activity.getScreenName();
+			
+			MyTwitterApp.getRestClient().getAdditionalOtherUsersTimeline(
+					screenNamedizzle, lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
 
 						public void onSuccess(JSONArray json) {
 							// Log.d("DEBUG", json.toString());

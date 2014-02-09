@@ -2,6 +2,8 @@ package com.mikes.Twitter.app;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -18,10 +20,12 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mikes.Twitter.app.fragments.HomeTimelineFragment;
 import com.mikes.Twitter.app.fragments.MentionsFragment;
 import com.mikes.Twitter.app.fragments.TweetsListFragment;
 import com.mikes.Twitter.app.models.Tweet;
+import com.mikes.Twitter.app.models.User;
 
 import eu.erikw.PullToRefreshListView;
 
@@ -31,6 +35,7 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 	TweetsAdapter adapter;
 	List<Tweet> tweets;
 	TweetsListFragment fragmentTweets;
+	String myScreenName;
 	
 	private void setupNavigationTabs() {
 		ActionBar actionBar = getActionBar();
@@ -47,6 +52,15 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 		actionBar.addTab(tabMentions);
 		
 		actionBar.selectTab(tabHome);
+		
+		MyTwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int arg0, JSONObject json) {
+				User u = User.fromJson(json);
+				myScreenName = u.getScreenName();
+				super.onSuccess(arg0, json);
+			}
+		});
 		
 	}
 	
@@ -123,6 +137,7 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 			
 		case R.id.action_profile:
 			Intent j = new Intent(this, ProfileActivity.class);
+			j.putExtra("userinfo", myScreenName);
 			startActivity(j);
 			break;
 		default:
