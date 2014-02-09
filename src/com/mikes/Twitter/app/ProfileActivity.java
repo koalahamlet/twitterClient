@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mikes.Twitter.app.fragments.UserTimelineFragment;
@@ -21,6 +22,7 @@ public class ProfileActivity extends FragmentActivity {
 	TextView tvTagline;
 	TextView tvFollowers;
 	TextView tvFollowing;
+	String screenName;
 	ImageView ivProfileImage;
 
 	@Override
@@ -29,12 +31,8 @@ public class ProfileActivity extends FragmentActivity {
 		setContentView(R.layout.activity_profile);
 		
 		
-		String screenName = (String) getIntent().getStringExtra("userinfo");
+		screenName = (String) getIntent().getStringExtra("userinfo");
 		
-//		UserTimelineFragment firstFragment = new UserTimelineFragment(screenName);
-		
-//		getSupportFragmentManager().beginTransaction()
-//         .add(R.id.frameContainer, firstFragment).commit();
 		
 		if (screenName != null){
 			Log.d("DEBUG", "YOU GOT SOMETHING");
@@ -81,7 +79,10 @@ public class ProfileActivity extends FragmentActivity {
 		tvFollowers = (TextView) findViewById(R.id.tvFollowers);
 		tvFollowing = (TextView) findViewById(R.id.tvFollowing);
 		ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+//		Toast.makeText(this, user.getScreenName(), Toast.LENGTH_LONG).show();
+		
 		ivProfileImage.setTag(user.getScreenName());
+		
 		tvName.setText(user.getName());
 		tvTagline.setText(user.getTagline());
 		tvFollowers.setText(user.getFollowersCount() + " followers");
@@ -96,4 +97,7 @@ public class ProfileActivity extends FragmentActivity {
 		return true;
 	}
 
+	public String getScreenName() {
+		return this.screenName;
+	}
 }
