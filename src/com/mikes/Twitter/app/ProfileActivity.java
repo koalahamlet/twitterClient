@@ -52,8 +52,8 @@ public class ProfileActivity extends FragmentActivity {
 		});
 
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		UserTimelineFragment fragmentDemo = UserTimelineFragment.newInstance(5, screenName);
-		ft.replace(R.id.frameUserTimeline, fragmentDemo);
+		UserTimelineFragment fragmentTimeline = UserTimelineFragment.newInstance(screenName);
+		ft.replace(R.id.frameUserTimeline, fragmentTimeline);
 		ft.commit();
 
 	}
@@ -79,7 +79,4 @@ public class ProfileActivity extends FragmentActivity {
 //		return true;
 //	}
 
-//	public String getScreenName() {
-//		return this.screenName;
-//	}
 }

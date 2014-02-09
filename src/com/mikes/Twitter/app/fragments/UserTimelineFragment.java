@@ -14,13 +14,12 @@ import com.mikes.Twitter.app.models.Tweet;
 
 public class UserTimelineFragment extends TweetsListFragment {
 
-	String screenName;
+	
 
-	public static UserTimelineFragment newInstance(int someInt, String someTitle) {
+	public static UserTimelineFragment newInstance( String screenName) {
 		UserTimelineFragment fragmentDemo = new UserTimelineFragment();
         Bundle args = new Bundle();
-        args.putInt("someInt", someInt);
-        args.putString("someTitle", someTitle);
+        args.putString("screenName", screenName);
         fragmentDemo.setArguments(args);
         return fragmentDemo;
     }
@@ -36,15 +35,14 @@ public class UserTimelineFragment extends TweetsListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		int SomeInt = getArguments().getInt("someInt", 0);	
-	       String someTitle = getArguments().getString("someTitle", "");
-//		ProfileActivity activity = (ProfileActivity) getActivity();
-		final String screenNamedizzle = someTitle;
+		
+	    String screenName = getArguments().getString("screenName", "");
+		
 
 
 
 			MyTwitterApp.getRestClient().getOtherUsersTimeline(
-					screenNamedizzle, new JsonHttpResponseHandler() {
+					screenName, new JsonHttpResponseHandler() {
 						@Override
 						public void onSuccess(JSONArray json) {
 
@@ -55,7 +53,8 @@ public class UserTimelineFragment extends TweetsListFragment {
 
 						@Override
 						public void onFailure(Throwable arg0, String arg1) {
-							Toast.makeText(getActivity(), "now you fucked up",
+							Toast.makeText(getActivity(), "we couldn't fetch this users tweets " +
+									"for some reason. Please check back soon.",
 									Toast.LENGTH_LONG).show();
 							super.onFailure(arg0, arg1);
 						}
@@ -76,13 +75,12 @@ public class UserTimelineFragment extends TweetsListFragment {
 			Log.d("DEBUG", count.toString());
 			Log.d("DEBUG", lastTweet.toString());
 
-			  String someTitle = getArguments().getString("someTitle", "");
-//				ProfileActivity activity = (ProfileActivity) getActivity();
-				final String screenNamedizzle = someTitle;
-//			final String screenNamedizzle = activity.getScreenName();
+			  String screenName = getArguments().getString("screenName", "");
+				
+
 			
 			MyTwitterApp.getRestClient().getAdditionalOtherUsersTimeline(
-					screenNamedizzle, lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
+					screenName, lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
 
 						public void onSuccess(JSONArray json) {
 							// Log.d("DEBUG", json.toString());

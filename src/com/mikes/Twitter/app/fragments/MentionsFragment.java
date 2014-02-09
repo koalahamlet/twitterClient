@@ -45,10 +45,7 @@ public class MentionsFragment extends TweetsListFragment {
 		} else {
 			Tweet lastTweet = (Tweet) lvTweets
 					.getItemAtPosition(totalItemsCount - 1);
-			Integer count = totalItemsCount;
-			// Integer count = getAdapter().getCount();
-			Log.d("DEBUG", count.toString());
-			Log.d("DEBUG", lastTweet.toString());
+
 			// minus one in the next call to get rid of duplicate tweet
 			MyTwitterApp.getRestClient().getMoreMentions(
 					lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
