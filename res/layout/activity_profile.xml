@@ -66,15 +66,15 @@
         
     </LinearLayout>
 
-     <fragment
+    <!--  <fragment
         android:id="@+id/fragmentUserTimeline"
         android:name="com.mikes.Twitter.app.fragments.UserTimelineFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/llCounts"
-        tools:layout="@layout/fragment_tweets_list" /> 
-<!-- 
+        tools:layout="@layout/fragment_tweets_list" />  -->
+
     <FrameLayout
         android:id="@+id/frameUserTimeline"
         android:layout_width="wrap_content"
@@ -83,6 +83,6 @@
         android:layout_below="@+id/llCounts"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/fragmentUserTimeline" >
-    </FrameLayout> -->
+    </FrameLayout> 
 
 </RelativeLayout>

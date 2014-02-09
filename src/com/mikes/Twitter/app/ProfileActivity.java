@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -50,7 +51,10 @@ public class ProfileActivity extends FragmentActivity {
 			}
 		});
 
-			
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		UserTimelineFragment fragmentDemo = UserTimelineFragment.newInstance(5, screenName);
+		ft.replace(R.id.frameUserTimeline, fragmentDemo);
+		ft.commit();
 
 	}
 	
@@ -75,7 +79,7 @@ public class ProfileActivity extends FragmentActivity {
 //		return true;
 //	}
 
-	public String getScreenName() {
-		return this.screenName;
-	}
+//	public String getScreenName() {
+//		return this.screenName;
+//	}
 }

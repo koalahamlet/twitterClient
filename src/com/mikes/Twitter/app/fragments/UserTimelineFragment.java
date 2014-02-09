@@ -16,18 +16,30 @@ public class UserTimelineFragment extends TweetsListFragment {
 
 	String screenName;
 
+	public static UserTimelineFragment newInstance(int someInt, String someTitle) {
+		UserTimelineFragment fragmentDemo = new UserTimelineFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", someInt);
+        args.putString("someTitle", someTitle);
+        fragmentDemo.setArguments(args);
+        return fragmentDemo;
+    }
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		 
+		
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		ProfileActivity activity = (ProfileActivity) getActivity();
-		final String screenNamedizzle = activity.getScreenName();
+		int SomeInt = getArguments().getInt("someInt", 0);	
+	       String someTitle = getArguments().getString("someTitle", "");
+//		ProfileActivity activity = (ProfileActivity) getActivity();
+		final String screenNamedizzle = someTitle;
 
 
 
@@ -64,8 +76,10 @@ public class UserTimelineFragment extends TweetsListFragment {
 			Log.d("DEBUG", count.toString());
 			Log.d("DEBUG", lastTweet.toString());
 
-			ProfileActivity activity = (ProfileActivity) getActivity();
-			final String screenNamedizzle = activity.getScreenName();
+			  String someTitle = getArguments().getString("someTitle", "");
+//				ProfileActivity activity = (ProfileActivity) getActivity();
+				final String screenNamedizzle = someTitle;
+//			final String screenNamedizzle = activity.getScreenName();
 			
 			MyTwitterApp.getRestClient().getAdditionalOtherUsersTimeline(
 					screenNamedizzle, lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
