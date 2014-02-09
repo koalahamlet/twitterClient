@@ -39,9 +39,6 @@ public class TweetsListFragment extends Fragment {
 		//whenever fragment is displayed AND activity exists
 		super.onActivityCreated(savedInstanceState);
 		 
-//		Log.d("DEBUG", jsonTweets.toString());
-		
-		 
 		adapter = new TweetsAdapter(getActivity(), tweets);
 		lvTweets = (PullToRefreshListView) getActivity().findViewById(R.id.lvTweets);
 		lvTweets.setAdapter(adapter);
@@ -62,7 +59,7 @@ public class TweetsListFragment extends Fragment {
 	}
 	
 	public void showFailMessage() {
-		// TODO Auto-generated method stub
+
 		Toast.makeText(getActivity(), "Whoops, we can't seem to speak to teh netz at the moment. " +
 				"You'll see your tweets again once you've gotten a better connection.",
 				Toast.LENGTH_LONG).show();
@@ -74,6 +71,5 @@ public class TweetsListFragment extends Fragment {
 
 	public void queryTehNetz(int page, int totalItemsCount) {
 		//nothing to see here
-		
 	}
 }

@@ -16,10 +16,6 @@ public class UserTimelineFragment extends TweetsListFragment {
 
 	String screenName;
 
-	// public UserTimelineFragment(String screenName){
-	// this.screenName = screenName;
-	// }
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +29,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 		ProfileActivity activity = (ProfileActivity) getActivity();
 		final String screenNamedizzle = activity.getScreenName();
 
-//		if (screenNamedizzle != null) {
+
 
 			MyTwitterApp.getRestClient().getOtherUsersTimeline(
 					screenNamedizzle, new JsonHttpResponseHandler() {
@@ -42,8 +38,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
 							getAdapter().addAll(Tweet.fromJson(json));
 
-//							Toast.makeText(getActivity(), screenNamedizzle,
-//									Toast.LENGTH_LONG).show();
+
 						}
 
 						@Override
@@ -53,17 +48,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 							super.onFailure(arg0, arg1);
 						}
 					});
-//		} else {
-//			MyTwitterApp.getRestClient().getUserTimeline(
-//					new JsonHttpResponseHandler() {
-//						@Override
-//						public void onSuccess(JSONArray json) {
-////							Toast.makeText(getActivity(), screenNamedizzle,
-////									Toast.LENGTH_LONG).show();
-//							getAdapter().addAll(Tweet.fromJson(json));
-//						}
-//					});
-//		}
+
 	}
 
 	@Override

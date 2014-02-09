@@ -33,10 +33,7 @@ public class ProfileActivity extends FragmentActivity {
 		
 		screenName = (String) getIntent().getStringExtra("userinfo");
 		
-//		
-//		if (screenName != null){
-//			Log.d("DEBUG", "YOU GOT SOMETHING");
-//		
+
 		MyTwitterApp.getRestClient().getOtherUsersInfo(screenName, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(int arg0, JSONObject json) {
@@ -54,22 +51,7 @@ public class ProfileActivity extends FragmentActivity {
 		});
 
 			
-		
-//		}else{
-//			Log.d("DEBUG", "mugatu screams:YOU GET NOTHING! NOTHING! NOTHING!");
-//			
-//			MyTwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
-//				@Override
-//				public void onSuccess(JSONObject json) {
-//					// TODO Auto-generated method stub
-//					User u = User.fromJson(json);
-//					getActionBar().setTitle("@" + u.getScreenName());
-//					populateProfileHeader(u);
-//				}
-//
-//				
-//			});
-//		}
+
 	}
 	
 	private void populateProfileHeader(User user) {
@@ -79,9 +61,6 @@ public class ProfileActivity extends FragmentActivity {
 		tvFollowers = (TextView) findViewById(R.id.tvFollowers);
 		tvFollowing = (TextView) findViewById(R.id.tvFollowing);
 		ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
-//		Toast.makeText(this, user.getScreenName(), Toast.LENGTH_LONG).show();
-//		ivProfileImage.setTag(user.getScreenName());
-		
 		tvName.setText(user.getName());
 		tvTagline.setText(user.getTagline());
 		tvFollowers.setText(user.getFollowersCount() + " followers");
@@ -89,12 +68,12 @@ public class ProfileActivity extends FragmentActivity {
 		ImageLoader.getInstance().displayImage(user.getProfileImageUrl(), ivProfileImage);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.profile, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.profile, menu);
+//		return true;
+//	}
 
 	public String getScreenName() {
 		return this.screenName;
