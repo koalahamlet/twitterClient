@@ -6,5 +6,12 @@
         android:icon="@drawable/tweet_icon"
         android:showAsAction="always"
         android:title="@string/action_settings"/>
+    
+    <item
+
+        android:id="@+id/action_profile"
+        android:showAsAction="always"
+        android:icon="@drawable/profile_icon"
+        />
 
 </menu>

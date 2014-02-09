@@ -120,6 +120,11 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 			Intent i = new Intent(this, ComposeTweetActivity.class);
 			startActivityForResult(i, 7);
 			break;
+			
+		case R.id.action_profile:
+			Intent j = new Intent(this, ProfileActivity.class);
+			startActivity(j);
+			break;
 		default:
 			break;
 		}
@@ -127,6 +132,8 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 
 	}
 
+	
+	
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub

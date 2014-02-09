@@ -52,6 +52,10 @@
             android:name="com.mikes.Twitter.app.ComposeTweetActivity"
             android:label="@string/title_activity_compose_tweet" >
         </activity>
+        <activity
+            android:name="com.mikes.Twitter.app.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

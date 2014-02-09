@@ -63,7 +63,9 @@ public class TweetsListFragment extends Fragment {
 	
 	public void showFailMessage() {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "Whoops, we can't seem to speak to teh netz at the moment. You'll see your tweets again once you've gotten a better connection.", Toast.LENGTH_LONG).show();
+		Toast.makeText(getActivity(), "Whoops, we can't seem to speak to teh netz at the moment. " +
+				"You'll see your tweets again once you've gotten a better connection.",
+				Toast.LENGTH_LONG).show();
 	}
 	
 	public TweetsAdapter getAdapter() {

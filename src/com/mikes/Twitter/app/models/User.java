@@ -22,6 +22,9 @@ public class User extends Model {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
     
+    @Column(name = "description")
+    private String description;
+    
     @Column(name = "num_tweets")
     private int numTweets;
     
@@ -31,12 +34,14 @@ public class User extends Model {
     @Column(name = "friends_count")
     private int friendsCount;
     
+
+    
     public User() {
         super();
     }
 
     public User(String name, long uid, String screenName,
-            String profileImageUrl, int numTweets, int followersCount,
+            String profileImageUrl, String description,int numTweets, int followersCount,
             int friendsCount) {
         super();
         this.name = name;
@@ -46,6 +51,7 @@ public class User extends Model {
         this.numTweets = numTweets;
         this.followersCount = followersCount;
         this.friendsCount = friendsCount;
+        this.description = description;
     }
 
     public String getName() {
@@ -79,6 +85,10 @@ public class User extends Model {
     public String toString() {
     	return this.getName();
     }
+    
+    public String getTagline() {
+    	return description;
+    }
 
     public static User fromJson(JSONObject json) {
         User u = new User();
@@ -90,6 +100,7 @@ public class User extends Model {
             u.numTweets = json.getInt("statuses_count");
             u.followersCount = json.getInt("followers_count");
             u.friendsCount = json.getInt("friends_count");
+            u.description = json.getString("description");
         } catch (JSONException e) {
             e.printStackTrace();
         }
