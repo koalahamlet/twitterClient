@@ -54,7 +54,7 @@
         </activity>
         <activity
             android:name="com.mikes.Twitter.app.ComposeTweetActivity"
-            android:label="@string/title_activity_compose_tweet"
+            android:label=""     
             android:screenOrientation="portrait"
              >
         </activity>
