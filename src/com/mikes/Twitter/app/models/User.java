@@ -2,6 +2,8 @@ package com.mikes.Twitter.app.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -21,6 +23,9 @@ public class User extends Model {
     
     @Column(name = "profile_image_url")
     private String profileImageUrl;
+    
+    @Column(name = "profile_background_image_url")
+    private String profileBackgroundImageUrl;
     
     @Column(name = "description")
     private String description;
@@ -69,6 +74,10 @@ public class User extends Model {
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
+    
+    public String getProfileBackgroundImageUrl() {
+        return profileBackgroundImageUrl;
+    }
 
     public int getNumTweets() {
         return numTweets;
@@ -97,6 +106,7 @@ public class User extends Model {
             u.uid = json.getLong("id");
             u.screenName = json.getString("screen_name");
             u.profileImageUrl = json.getString("profile_image_url");
+            u.profileBackgroundImageUrl = json.getString("profile_background_image_url");
             u.numTweets = json.getInt("statuses_count");
             u.followersCount = json.getInt("followers_count");
             u.friendsCount = json.getInt("friends_count");
@@ -104,6 +114,8 @@ public class User extends Model {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Integer number = u.numTweets;
+        Log.d("DEBUB", "This user had "+ number  );
         return u;
     }
 

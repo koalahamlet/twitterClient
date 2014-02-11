@@ -21,10 +21,12 @@ public class ProfileActivity extends FragmentActivity {
 	
 	TextView tvName;
 	TextView tvTagline;
+	TextView tvTweets;
 	TextView tvFollowers;
 	TextView tvFollowing;
 	String screenName;
 	ImageView ivProfileImage;
+	ImageView ivProfileBackgroundImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class ProfileActivity extends FragmentActivity {
 			public void onSuccess(int arg0, JSONObject json) {
 				User u = User.fromJson(json);
 				getActionBar().setTitle("@" + u.getScreenName());
+				
 				populateProfileHeader(u);
 				super.onSuccess(arg0, json);
 			}
@@ -62,14 +65,21 @@ public class ProfileActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		tvName = (TextView) findViewById(R.id.tvName);
 		tvTagline = (TextView) findViewById(R.id.tvTagline);
+		tvTweets = (TextView) findViewById(R.id.tvTweets);
 		tvFollowers = (TextView) findViewById(R.id.tvFollowers);
 		tvFollowing = (TextView) findViewById(R.id.tvFollowing);
 		ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+		ivProfileBackgroundImage = (ImageView) findViewById(R.id.ivProfileBackgroundImage);
+		
+		
 		tvName.setText(user.getName());
 		tvTagline.setText(user.getTagline());
+		Integer number = user.getNumTweets();
+		tvTweets.setText(number + " tweets");
 		tvFollowers.setText(user.getFollowersCount() + " followers");
 		tvFollowing.setText(user.getFriendsCount() + " following");
 		ImageLoader.getInstance().displayImage(user.getProfileImageUrl(), ivProfileImage);
+		ImageLoader.getInstance().displayImage(user.getProfileBackgroundImageUrl(), ivProfileBackgroundImage);
 	}
 
 //	@Override
