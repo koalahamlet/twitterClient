@@ -20,13 +20,13 @@ import com.mikes.Twitter.app.models.Tweet;
 import com.mikes.Twitter.app.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class TweetsAdapter extends ArrayAdapter<Tweet> {
+public class UsersAdapter extends ArrayAdapter<User> {
 
 	String screenName;
 	ImageView imageView;
 	
-	public TweetsAdapter(Context context, List<Tweet> tweets) {
-		super(context, 0, tweets);
+	public UsersAdapter(Context context, List<User> users) {
+		super(context, 0, users);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -38,7 +38,7 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 			view = inflater.inflate(R.layout.tweet_item, null); 
 		}
 		
-		Tweet tweet = getItem(position);
+		User user = getItem(position);
 		final User user = tweet.getUser();
 		String screenName = user.getScreenName();
 		

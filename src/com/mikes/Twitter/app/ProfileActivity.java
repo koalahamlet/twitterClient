@@ -75,9 +75,10 @@ public class ProfileActivity extends FragmentActivity {
 		tvName.setText(user.getName());
 		tvTagline.setText(user.getTagline());
 		Integer number = user.getNumTweets();
-		tvTweets.setText(number + " tweets");
-		tvFollowers.setText(user.getFollowersCount() + " followers");
-		tvFollowing.setText(user.getFriendsCount() + " following");
+		tvTweets.setText(formatNumber(number));
+		
+		tvFollowers.setText(formatNumber(user.getFollowersCount()));
+		tvFollowing.setText(formatNumber(user.getFriendsCount()));
 		ImageLoader.getInstance().displayImage(user.getProfileImageUrl(), ivProfileImage);
 		ImageLoader.getInstance().displayImage(user.getProfileBackgroundImageUrl(), ivProfileBackgroundImage);
 	}
@@ -89,4 +90,22 @@ public class ProfileActivity extends FragmentActivity {
 //		return true;
 //	}
 
+	public String formatNumber(Integer number){
+		String numberString = number.toString();
+		if(number > 9999){
+			number = number/1000;
+			
+			numberString = number + "K";
+		}else if (number > 999999){
+			number = number/1000000;
+			
+			numberString = number + "M";
+		}else{
+			//whatevs
+		}
+		
+		return numberString;
+		
+	}
+	
 }

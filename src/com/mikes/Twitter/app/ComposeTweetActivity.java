@@ -98,6 +98,7 @@ public class ComposeTweetActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 	    MenuItem score = menu.findItem(R.id.text_counter);
 	    score.setTitle(characterCount.toString());
+	    score.setEnabled(false);
 	    return true;
 	}
 
