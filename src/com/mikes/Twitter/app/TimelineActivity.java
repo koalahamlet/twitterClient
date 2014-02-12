@@ -40,8 +40,8 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 	String myName;
 	String myScreenName;
 	String profileURL;
-	private HomeTimelineFragment htlFrag;
-	private MentionsFragment mFrag;
+	private HomeTimelineFragment htlFrag = null;
+	private MentionsFragment mFrag = null;
 	
 	
 
@@ -130,7 +130,7 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		fetchTimelineAsync(0);
+		htlFrag.getMainData();
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -156,18 +156,21 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 		FragmentManager manager = getSupportFragmentManager();
 		android.support.v4.app.FragmentTransaction fts = manager
 				.beginTransaction();
+
 		//lazy instantiation for the win
 		if (tab.getTag() == "HomeTimelineFragment") {
-			if (htlFrag == null) {
-				htlFrag = new HomeTimelineFragment();
-			}
+			fts.replace(R.id.frameContainer, new HomeTimelineFragment());
+//			if (htlFrag == null) {
+//				htlFrag = new HomeTimelineFragment();
+//			}
 			
-			fts.replace(R.id.frameContainer, htlFrag, "HTL");
+//			fts.replace(R.id.frameContainer, htlFrag, "HTL");
 		} else {
-			if (mFrag == null) {
-				mFrag = new MentionsFragment();
-			}
-			fts.replace(R.id.frameContainer, mFrag, "MF");
+			fts.replace(R.id.frameContainer, new MentionsFragment());
+//			if (mFrag == null) {
+//				mFrag = new MentionsFragment();
+//			}
+//			fts.replace(R.id.frameContainer, mFrag, "MF");
 		}
 		fts.commit();
 	}
