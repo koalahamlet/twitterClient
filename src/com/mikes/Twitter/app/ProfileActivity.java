@@ -2,15 +2,21 @@ package com.mikes.Twitter.app;
 
 import org.json.JSONObject;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.mikes.Twitter.app.fragments.FollowersListFragment;
+import com.mikes.Twitter.app.fragments.FollowingListFragment;
 import com.mikes.Twitter.app.fragments.UserTimelineFragment;
 import com.mikes.Twitter.app.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,6 +31,9 @@ public class ProfileActivity extends FragmentActivity {
 	String screenName;
 	ImageView ivProfileImage;
 	ImageView ivProfileBackgroundImage;
+	LinearLayout llTweets;
+	LinearLayout llFollowing;
+	LinearLayout llFollowers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +41,12 @@ public class ProfileActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_profile);
 
+		llTweets = (LinearLayout) findViewById(R.id.llTweets);
+		llFollowers = (LinearLayout) findViewById(R.id.llFollowers);
+		llFollowing = (LinearLayout) findViewById(R.id.llFollowing);
 		screenName = (String) getIntent().getStringExtra("userinfo");
+		
+		llTweets.setBackgroundColor(Color.parseColor("#80ACFF"));
 
 		showProgressBar();
 		MyTwitterApp.getRestClient().getOtherUsersInfo(screenName,
@@ -64,7 +78,54 @@ public class ProfileActivity extends FragmentActivity {
 				.newInstance(screenName);
 		ft.replace(R.id.frameUserTimeline, fragmentTimeline);
 		ft.commit();
+		
+		llTweets.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				UserTimelineFragment fragmentTimeline = UserTimelineFragment
+						.newInstance(screenName);
+				ft.replace(R.id.frameUserTimeline, fragmentTimeline);
+				ft.commit();
+				llTweets.setBackgroundColor(Color.parseColor("#80ACFF"));
+				llFollowers.setBackgroundColor(Color.parseColor("#00000000"));
+				llFollowing.setBackgroundColor(Color.parseColor("#00000000"));
+			}
+		});
+		
+		llFollowing.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				FollowingListFragment fragmentTimeline = FollowingListFragment.newInstance(screenName);
+				ft.replace(R.id.frameUserTimeline, fragmentTimeline);
+				ft.commit();		
+				llFollowing.setBackgroundColor(Color.parseColor("#80ACFF"));
+				llFollowers.setBackgroundColor(Color.parseColor("#00000000"));
+				llTweets.setBackgroundColor(Color.parseColor("#00000000"));
+				
+			}
+		});
+		
+		llFollowers.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				FollowersListFragment fragmentTimeline = FollowersListFragment.newInstance(screenName);
+				ft.replace(R.id.frameUserTimeline, fragmentTimeline);
+				ft.commit();		
+				llFollowing.setBackgroundColor(Color.parseColor("#00000000"));
+				llFollowers.setBackgroundColor(Color.parseColor("#80ACFF"));
+				llTweets.setBackgroundColor(Color.parseColor("#00000000"));
+				
+			}
+		});
 
+		
+		
 	}
 
 	private void populateProfileHeader(User user) {

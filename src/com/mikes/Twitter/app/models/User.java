@@ -1,4 +1,7 @@
 package com.mikes.Twitter.app.models;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -99,6 +102,28 @@ public class User extends Model {
     	return description;
     }
 
+    public static ArrayList<User> fromJson(JSONArray json) {
+    	
+    	ArrayList<User> users = new ArrayList<User>(json.length());
+        
+        for (int i=0; i < json.length(); i++) {
+            JSONObject userJson = null;
+            try {
+                userJson = json.getJSONObject(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+
+            User user = User.fromJson(userJson);
+            if (user != null) {
+                users.add(user);
+            }
+        }
+
+        return users;
+    }
+    
     public static User fromJson(JSONObject json) {
         User u = new User();
         try {
