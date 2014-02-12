@@ -20,8 +20,11 @@ import com.mikes.Twitter.app.TweetsAdapter;
 import com.mikes.Twitter.app.models.Tweet;
 
 import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 public class TweetsListFragment extends Fragment {
+	
+	
 	
 	ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 	protected PullToRefreshListView lvTweets;
@@ -40,8 +43,20 @@ public class TweetsListFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		 
 		adapter = new TweetsAdapter(getActivity(), tweets);
+		//
 		lvTweets = (PullToRefreshListView) getActivity().findViewById(R.id.lvTweets);
+		//
 		lvTweets.setAdapter(adapter);
+		
+		lvTweets.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				
+				getMainData();
+				
+			}
+		});
 		
 		lvTweets.setOnScrollListener(new EndlessScrollListener() {
 
@@ -55,6 +70,7 @@ public class TweetsListFragment extends Fragment {
 			}
 
 			
+			
 });
 	}
 	
@@ -63,6 +79,10 @@ public class TweetsListFragment extends Fragment {
 		Toast.makeText(getActivity(), "Whoops, we can't seem to speak to teh netz at the moment. " +
 				"You'll see your tweets again once you've gotten a better connection.",
 				Toast.LENGTH_LONG).show();
+	}
+	
+	public void getMainData() {
+		// nothing to see here
 	}
 	
 	public TweetsAdapter getAdapter() {

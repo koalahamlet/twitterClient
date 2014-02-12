@@ -21,7 +21,7 @@ import com.mikes.Twitter.app.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class UsersAdapter extends ArrayAdapter<User> {
-
+//////////////////////this class hasn't been customized to do what it is supposed to do yet. 
 	String screenName;
 	ImageView imageView;
 	
@@ -38,20 +38,20 @@ public class UsersAdapter extends ArrayAdapter<User> {
 			view = inflater.inflate(R.layout.tweet_item, null); 
 		}
 		
-		User user = getItem(position);
-		final User user = tweet.getUser();
+		final User user = getItem(position);
+		
 		String screenName = user.getScreenName();
 		
 		imageView = (ImageView) view.findViewById(R.id.ivProfile);
 		ImageLoader.getInstance().displayImage(user.getProfileImageUrl(), imageView);
 		
 		TextView nameView = (TextView) view.findViewById(R.id.tvName);
-		String formattedName = "<b>" + tweet.getUser().getName() + "</b>" + " <small><font color = '#777777'>@" +
+		String formattedName = "<b>" + user.getName() + "</b>" + " <small><font color = '#777777'>@" +
 		user.getScreenName() + "</font></small>";
 		
 		nameView.setText(Html.fromHtml(formattedName));
 		TextView bodyView = (TextView) view.findViewById(R.id.tvBody);
-		bodyView.setText(Html.fromHtml(tweet.getBody()));
+//		bodyView.setText(Html.fromHtml(tweet.getBody()));
 
 		TextView createdView = (TextView) view.findViewById(R.id.tvDate);
 
@@ -71,17 +71,17 @@ public class UsersAdapter extends ArrayAdapter<User> {
 			}
 		});
 		
-		try {
-			date = tweet.getCreatedAt();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		String str = (String) DateUtils.getRelativeDateTimeString(getContext(),
-				date.getTime(), DateUtils.MINUTE_IN_MILLIS,
-				DateUtils.WEEK_IN_MILLIS, 0);
-		
-		createdView.setText(str);
+//		try {
+//			date = tweet.getCreatedAt();
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//
+//		String str = (String) DateUtils.getRelativeDateTimeString(getContext(),
+//				date.getTime(), DateUtils.MINUTE_IN_MILLIS,
+//				DateUtils.WEEK_IN_MILLIS, 0);
+//		
+//		createdView.setText(str);
 
 		return view; 
 	}

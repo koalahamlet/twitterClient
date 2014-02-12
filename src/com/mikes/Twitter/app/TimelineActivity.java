@@ -40,47 +40,10 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 	String myName;
 	String myScreenName;
 	String profileURL;
-
-	private void setupNavigationTabs() {
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayShowTitleEnabled(true);
-		
-//		TabHost th1 =(TabHost) this.findViewById(android.R.id.tabhost);
-		
-		Tab tabHome = actionBar.newTab().setText("Home").setTag("HomeTimelineFragment")
-				.setIcon(R.drawable.home_icon).setTabListener(this);
-		
-//		TextView tv1 = (TextView) th1.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
-//		
-//		tv1.setTextColor(Color.CYAN);
-		
-		
-		
-		Tab tabMentions = actionBar.newTab().setText("Mentions").setTag("MentionsFragment")
-				.setIcon(R.drawable.at_icon).setTabListener(this);
-		
-		actionBar.addTab(tabHome);
-		actionBar.addTab(tabMentions);
-		
-		
-		actionBar.selectTab(tabHome);
-		
-		MyTwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(int arg0, JSONObject json) {
-				User u = User.fromJson(json);
-				
-				myName = u.getName();
-				myScreenName = u.getScreenName();
-				profileURL = u.getProfileImageUrl();
-				
-				super.onSuccess(arg0, json);
-			}
-			//TODO: put on failure here so they don't crash when tweeting
-		});
-		
-	}
+	private HomeTimelineFragment htlFrag;
+	private MentionsFragment mFrag;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +74,56 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 		//
 	}
 
-	protected void fetchTimelineAsync(int i) {
-		setProgressBarIndeterminateVisibility(Boolean.TRUE);
+	
+	private void setupNavigationTabs() {
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
+		actionBar.setDisplayShowTitleEnabled(true);
+		
+//		TabHost th1 =(TabHost) this.findViewById(android.R.id.tabhost);
+		
+		Tab tabHome = actionBar.newTab().setText("Home").setTag("HomeTimelineFragment")
+				.setIcon(R.drawable.home_icon).setTabListener(this);
+		
+//		TextView tv1 = (TextView) th1.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
+//		
+//		tv1.setTextColor(Color.CYAN);
+		
+		
+		
+		Tab tabMentions = actionBar.newTab().setText("Mentions").setTag("MentionsFragment")
+				.setIcon(R.drawable.at_icon).setTabListener(this);
+		
+		actionBar.addTab(tabHome);
+		actionBar.addTab(tabMentions);
+		
+		
+		actionBar.selectTab(tabHome);
+		
+		
+//		showProgressBar();
+		MyTwitterApp.getRestClient().getMyInfo(new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int arg0, JSONObject json) {
+				User u = User.fromJson(json);
+				hideProgressBar();
+				myName = u.getName();
+				myScreenName = u.getScreenName();
+				profileURL = u.getProfileImageUrl();
+				
+				super.onSuccess(arg0, json);
+			}
+			
+			//TODO: put on failure here so they don't crash when tweeting
+		});
+		
+	}
 
-		setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+	protected void fetchTimelineAsync(int i) {
+
 	}
 
 	
@@ -147,11 +156,18 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 		FragmentManager manager = getSupportFragmentManager();
 		android.support.v4.app.FragmentTransaction fts = manager
 				.beginTransaction();
-
+		//lazy instantiation for the win
 		if (tab.getTag() == "HomeTimelineFragment") {
-			fts.replace(R.id.frameContainer, new HomeTimelineFragment());
+			if (htlFrag == null) {
+				htlFrag = new HomeTimelineFragment();
+			}
+			
+			fts.replace(R.id.frameContainer, htlFrag, "HTL");
 		} else {
-			fts.replace(R.id.frameContainer, new MentionsFragment());
+			if (mFrag == null) {
+				mFrag = new MentionsFragment();
+			}
+			fts.replace(R.id.frameContainer, mFrag, "MF");
 		}
 		fts.commit();
 	}
@@ -192,6 +208,14 @@ public class TimelineActivity extends FragmentActivity implements TabListener {
 		}
 		return true;
 
+	}
+	
+	public void showProgressBar() {
+		setProgressBarIndeterminateVisibility(true);
+	}
+
+	public void hideProgressBar() {
+		setProgressBarIndeterminateVisibility(false);
 	}
 	
 }

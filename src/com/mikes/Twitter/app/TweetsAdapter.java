@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikes.Twitter.app.models.Tweet;
 import com.mikes.Twitter.app.models.User;
@@ -24,6 +25,7 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 
 	String screenName;
 	ImageView imageView;
+	Boolean isProfileView = false;
 	
 	public TweetsAdapter(Context context, List<Tweet> tweets) {
 		super(context, 0, tweets);
@@ -63,10 +65,14 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 			
 			@Override
 			public void onClick(View v) {
-				
-				Intent i = new Intent(getContext(), ProfileActivity.class);
-				i.putExtra("userinfo", user.getScreenName());
-				getContext().startActivity(i);
+
+				if(!isProfileView){
+					Intent i = new Intent(getContext(), ProfileActivity.class);
+					i.putExtra("userinfo", user.getScreenName());
+					getContext().startActivity(i);
+				}else{
+					//do nothing
+				}
 				
 			}
 		});
@@ -84,6 +90,10 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 		createdView.setText(str);
 
 		return view; 
+	}
+	
+	public void setMikesValue(Boolean bool){
+		this.isProfileView = bool;
 	}
 
 }

@@ -25,11 +25,19 @@ public class HomeTimelineFragment extends TweetsListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getMainData();
+
+		
+
+	}
+
+	@Override
+	public void getMainData() {
 		MyTwitterApp.getRestClient().getHomeTimeline(
 				new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONArray jsonTweets) {
-
+						lvTweets.onRefreshComplete();
 						tweets = Tweet.fromJson(jsonTweets);
 						getAdapter().addAll(tweets);
 						// breaky breaky active android
@@ -51,11 +59,12 @@ public class HomeTimelineFragment extends TweetsListFragment {
 					@Override
 					public void onFailure(Throwable arg0, String arg1) {
 						// setProgressBarIndeterminateVisibility(Boolean.FALSE);
+						lvTweets.onRefreshComplete();
 						showFailMessage();
 						super.onFailure(arg0, arg1);
 					}
 				});
-
+		
 	}
 
 	@Override
@@ -67,8 +76,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
 			Log.d("DEBUG", "getView was null, wat?");
 		}
 
-		final PullToRefreshListView lvTweets = (PullToRefreshListView) getView()
-				.findViewById(R.id.lvTweets);
+//		final PullToRefreshListView lvTweets = (PullToRefreshListView) getView()
+//				.findViewById(R.id.lvTweets);
 
 	}
 

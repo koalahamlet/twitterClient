@@ -36,30 +36,40 @@ public class UserTimelineFragment extends TweetsListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-	    String screenName = getArguments().getString("screenName", "");
+	    getAdapter().setMikesValue(true);
 		
+		getMainData();
+		
+		
+	    
+
+			
+
+	}
+	
+	@Override
+	public void getMainData() {
+		String screenName = getArguments().getString("screenName", "");
+		MyTwitterApp.getRestClient().getOtherUsersTimeline(
+				screenName, new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(JSONArray json) {
+						lvTweets.onRefreshComplete();
+						getAdapter().addAll(Tweet.fromJson(json));
 
 
+					}
 
-			MyTwitterApp.getRestClient().getOtherUsersTimeline(
-					screenName, new JsonHttpResponseHandler() {
-						@Override
-						public void onSuccess(JSONArray json) {
-
-							getAdapter().addAll(Tweet.fromJson(json));
-
-
-						}
-
-						@Override
-						public void onFailure(Throwable arg0, String arg1) {
-							Toast.makeText(getActivity(), "we couldn't fetch this users tweets " +
-									"for some reason. Please check back soon.",
-									Toast.LENGTH_LONG).show();
-							super.onFailure(arg0, arg1);
-						}
-					});
-
+					@Override
+					public void onFailure(Throwable arg0, String arg1) {
+						lvTweets.onRefreshComplete();
+						Toast.makeText(getActivity(), "we couldn't fetch this users tweets " +
+								"for some reason. Please check back soon.",
+								Toast.LENGTH_LONG).show();
+						super.onFailure(arg0, arg1);
+					}
+				});
+		super.getMainData();
 	}
 
 	@Override
@@ -78,11 +88,12 @@ public class UserTimelineFragment extends TweetsListFragment {
 			  String screenName = getArguments().getString("screenName", "");
 				
 
-			
+			getActivity().setProgressBarIndeterminate(true);
 			MyTwitterApp.getRestClient().getAdditionalOtherUsersTimeline(
 					screenName, lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
 
 						public void onSuccess(JSONArray json) {
+							getActivity().setProgressBarIndeterminate(false);
 							// Log.d("DEBUG", json.toString());
 							tweets = Tweet.fromJson(json);
 							getAdapter().addAll(tweets);
@@ -102,6 +113,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 						}
 
 						public void onFailure(Throwable e) {
+							getActivity().setProgressBarIndeterminate(false);
 							Log.d("DEBUG",
 									"Fetch timeline error: " + e.toString());
 						}

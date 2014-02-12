@@ -22,19 +22,34 @@ public class MentionsFragment extends TweetsListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		getMainData();
+		
 
+	}
+	
+	
+	
+	public void getMainData() {
 		MyTwitterApp.getRestClient().getMentions(new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(int arg0, JSONArray jsonTweets) {
 
+				lvTweets.onRefreshComplete();
+				
 				tweets = Tweet.fromJson(jsonTweets);
 
 				getAdapter().addAll(tweets);
 
 			}
+			@Override
+			public void onFailure(Throwable arg0, String arg1) {
+				lvTweets.onRefreshComplete();
+				showFailMessage();
+				super.onFailure(arg0, arg1);
+			}
 
 		});
-
 	}
 
 	@Override
@@ -51,7 +66,9 @@ public class MentionsFragment extends TweetsListFragment {
 					lastTweet.getTweetId() - 1, new JsonHttpResponseHandler() {
 						@Override
 						public void onSuccess(JSONArray jsonTweets) {
+							lvTweets.onRefreshComplete();
 							// setProgressBarIndeterminateVisibility(Boolean.FALSE);
+							showFailMessage();
 							Log.d("DEBUG", jsonTweets.toString());
 							tweets = Tweet.fromJson(jsonTweets);
 							getAdapter().addAll(tweets);
@@ -72,6 +89,7 @@ public class MentionsFragment extends TweetsListFragment {
 						@Override
 						public void onFailure(Throwable arg0, String arg1) {
 							showFailMessage();
+							lvTweets.onRefreshComplete();
 							// setProgressBarIndeterminateVisibility(Boolean.FALSE);
 							super.onFailure(arg0, arg1);
 						}
